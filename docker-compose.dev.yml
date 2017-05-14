@@ -46,8 +46,6 @@ services:
     volumes:
       - ./config/appdata/startup.sh:/appdata-startup.sh
       - .:/var/www/html
-      - mediadata:/var/www/html/web/media
-      - asuscomdata:/var/www/html/web/asuscom-data
     command: /bin/sh /appdata-startup.sh
 
 
