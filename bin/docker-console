@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+docker-compose exec php bash -c "php -c /usr/local/etc/php/php-console.ini ./bin/console $1"

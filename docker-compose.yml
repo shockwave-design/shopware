@@ -29,13 +29,14 @@ services:
   php:
     user: www-data
     build: ./docker/php-fpm
-    image: shockwavemk/php:7.1.4-fpm
+    image: shockwavemk/php:7.0-fpm
     depends_on:
       - appdata
       - cache
       - mysql
     volumes:
       - ./config/php-fpm/etc/php.ini:/usr/local/etc/php/php.ini
+      - ./config/php-fpm/etc/php-console.ini:/usr/local/etc/php/php-console.ini
       - ./config/php-fpm/etc/ext-xdebug-on.ini:/usr/local/etc/php/conf.d/ext-xdebug.ini
     volumes_from:
       - appdata
@@ -70,13 +71,6 @@ services:
       back:
         aliases:
           - "rediscache"
-
-  logspout:
-    image: gliderlabs/logspout
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock
-    command: syslog+tls://logs5.papertrailapp.com:46259
-
 
 networks:
   front:

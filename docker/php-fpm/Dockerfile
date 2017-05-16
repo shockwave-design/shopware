@@ -1,4 +1,4 @@
-FROM php:7.1.3-fpm
+FROM php:7.0-fpm
 
 ENV PHP_EXTRA_CONFIGURE_ARGS --enable-fpm --with-fpm-user=www-data --with-fpm-group=www-data --enable-intl --enable-opcache
 
@@ -51,7 +51,6 @@ RUN \
   wget \
   librabbitmq-dev
 
-# http://devdocs.magento.com/guides/v2.0/install-gde/system-requirements.html
 RUN \
     /usr/local/bin/docker-php-ext-install \
     pdo \
@@ -69,6 +68,13 @@ RUN \
     json \
     opcache \
     zip
+
+# Install redis
+ENV PHPREDIS_VERSION 3.1.2
+RUN mkdir -p /usr/src/php/ext/redis \
+    && curl -L https://github.com/phpredis/phpredis/archive/$PHPREDIS_VERSION.tar.gz | tar xvz -C /usr/src/php/ext/redis --strip 1 \
+    && echo 'redis' >> /usr/src/php-available-exts \
+    && docker-php-ext-install redis
 
 # Make sure the volume mount point is empty
 RUN rm -rf /var/www/html/*
@@ -118,6 +124,10 @@ RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
     && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp \
     && mv /tmp/blackfire-*.so $(php -r "echo ini_get('extension_dir');")/blackfire.so \
     && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > $PHP_INI_DIR/conf.d/blackfire.ini
+
+# Install ant
+RUN apt-get update && \
+    apt-get install -qy ant
 
 ENV LOG_STREAM="/tmp/stdout"
 RUN mkfifo $LOG_STREAM && chmod 777 $LOG_STREAM

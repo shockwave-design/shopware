@@ -1,13 +1,13 @@
 # Hostname e.g. example.com
-app.host =
+app.host = dev.shopware.io
 # Path e.g. /shopware. Leave blank if installed in document root
 app.path =
 
 # Database credentials
-db.name =
+db.name = mysql
 db.host = localhost
-db.user =
-db.password =
+db.user = root
+db.password = pw
 db.port = 3306
 
 test.dir  = ${basedir}/tests

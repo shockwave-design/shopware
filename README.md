@@ -16,6 +16,83 @@ Furthermore Shopware 5 provides an event-driven plugin system and an advanced ho
 
 Visit the forum at <http://forum.shopware.com/>
 
+# Docker setup
+
+Install docker
+
+https://www.docker.com/
+
+e.g. for ubuntu: https://www.docker.com/docker-ubuntu
+
+
+```bash
+
+sudo apt-get -y install \
+  apt-transport-https \
+  ca-certificates \
+  curl
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+sudo add-apt-repository \
+       "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+       $(lsb_release -cs) \
+       stable"
+
+sudo apt-get update
+
+sudo apt-get -y install docker-ce
+
+```
+
+Install docker-compose
+
+e.g. for ubuntu: https://github.com/docker/compose/releases
+
+```bash
+
+curl -L https://github.com/docker/compose/releases/download/1.13.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+
+```
+
+Startup shop infrastructure
+
+```bash
+
+cd /your-shop-root-folder/
+
+docker-compose up -d
+
+```
+
+Install the shop
+
+```bash
+
+chmod +x bin/*
+bin/docker-install
+
+
+```
+
+Edit your hostfile on your computer
+
+e.g. ubuntu
+
+```
+TODO
+
+```
+
+Open http://dev.shopware.io/
+
+in your browser.
+
+That's it.
+
+
+
 ### Shopware Server Requirements
 
 - PHP 5.6.4 or above
