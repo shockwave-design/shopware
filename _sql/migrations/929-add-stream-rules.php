@@ -22,25 +22,21 @@
  * our trademarks remain entirely with us.
  */
 
-namespace Shopware\Components\DependencyInjection\Compiler;
+use Shopware\Components\Migrations\AbstractMigration;
 
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-
-/**
- * @category  Shopware
- *
- * @copyright Copyright (c) shopware AG (http://www.shopware.de)
- */
-class AddCaptchaCompilerPass implements CompilerPassInterface
+class Migrations_Migration929 extends AbstractMigration
 {
-    use TagReplaceTrait;
-
     /**
-     * @param ContainerBuilder $container
+     * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function up($modus)
     {
-        $this->replaceArgumentWithTaggedServices($container, 'shopware.captcha.repository', 'shopware.captcha', 0);
+        $this->addSql("INSERT IGNORE INTO s_core_acl_resources (name) VALUES ('customerstream');");
+        $this->addSql("SET @resourceId = (SELECT id FROM s_core_acl_resources WHERE name = 'customerstream');");
+        $this->addSql("INSERT IGNORE INTO s_core_acl_privileges (resourceID,name) VALUES (@resourceId, 'save');");
+        $this->addSql("INSERT IGNORE INTO s_core_acl_privileges (resourceID,name) VALUES (@resourceId, 'delete');");
+        $this->addSql("INSERT IGNORE INTO s_core_acl_privileges (resourceID,name) VALUES (@resourceId, 'search_index');");
+        $this->addSql("INSERT IGNORE INTO s_core_acl_privileges (resourceID,name) VALUES (@resourceId, 'stream_index');");
+        $this->addSql("INSERT IGNORE INTO s_core_acl_privileges (resourceID,name) VALUES (@resourceId, 'charts');");
     }
 }

@@ -25,6 +25,7 @@
 namespace Shopware\Components\Api\Resource;
 
 use Shopware\Components\Api\Exception as ApiException;
+use Shopware\Components\Random;
 use Shopware\Components\Thumbnail\Manager;
 use Shopware\Models\Media\Album;
 use Shopware\Models\Media\Media as MediaModel;
@@ -173,24 +174,20 @@ class Media extends Resource
         $media = $this->getRepository()->find($id);
 
         if (!$media) {
-            throw new ApiException\NotFoundException("Media by id $id not found");
+            throw new ApiException\NotFoundException(sprintf('Media by id "%d" not found', $id));
         }
 
-        $params = $this->prepareMediaData($params, $media);
-        $media->fromArray($params);
+        if (!empty($params['file'])) {
+            $tmpFile = $this->saveAsTempMediaFile($params['file']);
+            $file = new File($tmpFile);
 
-        $violations = $this->getManager()->validate($media);
-        if ($violations->count() > 0) {
-            throw new ApiException\ValidationException($violations);
-        }
-
-        $this->flush();
-
-        if ($media->getType() == MediaModel::TYPE_IMAGE) {
-            /** @var $manager Manager */
-            $manager = $this->getContainer()->get('thumbnail_manager');
-
-            $manager->createMediaThumbnail($media, [], true);
+            try {
+                $this->getContainer()->get('shopware_media.replace_service')->replace($id, $file);
+                @unlink($tmpFile);
+            } catch (\Exception $exception) {
+                @unlink($tmpFile);
+                throw new ApiException\CustomValidationException($exception->getMessage());
+            }
         }
 
         return $media;
@@ -365,7 +362,7 @@ class Media extends Resource
 
         $counter = 1;
         if ($baseFileName === null) {
-            $filename = md5(uniqid(rand(), true));
+            $filename = Random::getAlphanumericString(32);
         } else {
             $filename = $baseFileName;
         }
@@ -377,7 +374,7 @@ class Media extends Resource
                 $filename = "$counter-$baseFileName";
                 ++$counter;
             } else {
-                $filename = md5(uniqid(rand(), true));
+                $filename = Random::getAlphanumericString(32);
             }
             $filename = substr($filename, 0, self::FILENAME_LENGTH);
         }
@@ -511,5 +508,29 @@ class Media extends Resource
         }
 
         return $oldPath;
+    }
+
+    /**
+     * @param string $url
+     *
+     * @throws \RuntimeException
+     *
+     * @return string
+     */
+    private function saveAsTempMediaFile($url)
+    {
+        $tmpFile = tempnam(sys_get_temp_dir(), 'media_update');
+        $localStream = fopen($tmpFile, 'wb');
+
+        if (!$remoteStream = fopen($url, 'rb')) {
+            throw new \RuntimeException(sprintf('Could not open url for reading: %s', $url));
+        }
+
+        stream_copy_to_stream($remoteStream, $localStream);
+
+        fclose($remoteStream);
+        fclose($localStream);
+
+        return $tmpFile;
     }
 }

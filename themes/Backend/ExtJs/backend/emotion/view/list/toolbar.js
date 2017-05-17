@@ -76,13 +76,15 @@ Ext.define('Shopware.apps.Emotion.view.list.Toolbar', {
             }
         });
 
-        me.items = [{
+        me.items = [
+            /*{if {acl_is_allowed privilege=create}}*/
+        {
             text: '{s name=toolbar/add_emotion}{/s}',
             iconCls: 'sprite-plus-circle',
             action: 'emotion-list-toolbar-add'
         }, {
             text: '{s name=toolbar/add_emotion_from_preset}{/s}',
-            iconCls: 'sprite-pin marketing--shopping-worlds',
+            iconCls: 'sprite-emotion-presets',
             action: 'emotion-list-toolbar-add-preset'
         }, {
             xtype: 'form',
@@ -91,7 +93,10 @@ Ext.define('Shopware.apps.Emotion.view.list.Toolbar', {
             items: [
                 me.filefield
             ]
-        }, {
+        },
+        /*{/if}*/
+        /*{if {acl_is_allowed privilege=delete}}*/
+        {
             text: '{s name=toolbar/delete_selected_emotion}{/s}',
             iconCls: 'sprite-minus-circle',
             action: 'emotion-list-toolbar-delete',
@@ -99,7 +104,9 @@ Ext.define('Shopware.apps.Emotion.view.list.Toolbar', {
             handler: function() {
                 me.fireEvent('removeEmotions');
             }
-        }, '->', me.searchField, {
+        }
+        /*{/if}*/
+        , '->', me.searchField, {
             xtype: 'tbspacer',
             width: 6
         }];

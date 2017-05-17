@@ -37,7 +37,7 @@ Ext.define('Shopware.apps.Customer.view.main.Wizard', {
     cls: 'plugin-manager-loading-mask customer-wizard',
     bodyPadding: 20,
     header: false,
-    width: 1400,
+    width: 1250,
     height: 540,
 
     initComponent: function() {
@@ -165,11 +165,17 @@ Ext.define('Shopware.apps.Customer.view.main.Wizard', {
             handler: Ext.bind(me.previousPage, me)
         });
 
+        me.skipButton = Ext.create('Ext.button.Button', {
+            text: '{s name="skip"}{/s}',
+            cls: 'secondary',
+            handler: Ext.bind(me.finish, me)
+        });
+
         return [{
             xtype: 'toolbar',
             dock: 'bottom',
             ui: 'shopware-ui',
-            items: ['->', me.previousButton, me.nextButton]
+            items: [me.skipButton, '->', me.previousButton, me.nextButton]
         }];
     }
 });

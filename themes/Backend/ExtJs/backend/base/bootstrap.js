@@ -134,6 +134,7 @@
 {include file='backend/base/store/category_tree.js'}
 {include file='backend/base/store/customer_group.js'}
 {include file='backend/base/store/dispatch.js'}
+{include file='backend/base/store/doc_type.js'}
 {include file='backend/base/store/payment.js'}
 {include file='backend/base/store/shop.js'}
 {include file='backend/base/store/shop_language.js'}
@@ -168,6 +169,7 @@
 {include file='backend/base/component/Shopware.VTypes.js'}
 {include file='backend/base/component/Shopware.form.field.TinyMCE.js'}
 {include file='backend/base/component/Shopware.form.plugin.Translation.js'}
+{include file='backend/base/component/Shopware.form.plugin.SnippetTranslation.js'}
 {include file='backend/base/component/Shopware.grid.HeaderToolTip.js'}
 {include file='backend/base/component/Shopware.Notification.js'}
 {include file='backend/base/component/Shopware.form.PasswordStrengthMeter.js'}

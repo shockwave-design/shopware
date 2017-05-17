@@ -1,4 +1,3 @@
-<?php
 /**
  * Shopware 5
  * Copyright (c) shopware AG
@@ -20,21 +19,34 @@
  * The licensing of the program under the AGPLv3 does not imply a
  * trademark license. Therefore any rights, title and interest in
  * our trademarks remain entirely with us.
+ *
+ * @category   Shopware
+ * @package    Base
+ * @subpackage Store
+ * @version    $Id$
+ * @author shopware AG
  */
 
-namespace Shopware\Bundle\MediaBundle;
+/**
+ * The base store for document types.
+ */
+Ext.define('Shopware.apps.Base.store.DocType', {
+    extend: 'Ext.data.Store',
 
-use Symfony\Component\HttpFoundation\File\File;
+    alternateClassName: 'Shopware.store.DocType',
+    storeId: 'base.Payment',
+    model : 'Shopware.apps.Base.model.DocType',
+    pageSize: 1000,
+    remoteFilter: true,
 
-interface MediaReplaceServiceInterface
-{
-    /**
-     * replace the media by the given mediaId with the given file content
-     *
-     * @param int  $mediaId
-     * @param File $file
-     *
-     * @throws \Exception
-     */
-    public function replace($mediaId, File $file);
-}
+    proxy:{
+        type:'ajax',
+        url:'{url action="getDocTypes"}',
+        reader:{
+            type: 'json',
+            root: 'data',
+            totalProperty: 'total'
+        }
+    }
+}).create();
+
