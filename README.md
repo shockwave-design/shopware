@@ -62,6 +62,27 @@ chmod +x /usr/local/bin/docker-compose
 
 ```
 
+### Configure blackfire and papertrail
+
+Configure your blackfire server token and your papertrail port.
+
+```yaml
+blackfire:
+    image: blackfire/blackfire
+    environment:
+      BLACKFIRE_SERVER_ID: your-server-id
+      BLACKFIRE_SERVER_TOKEN: your-server-token
+    networks:
+        - front
+        - back
+
+  logspout:
+      image: gliderlabs/logspout
+      volumes:
+        - /var/run/docker.sock:/tmp/docker.sock
+      command: syslog+tls://logs5.papertrailapp.com:your-papertrail-port
+```
+
 ### Startup shop infrastructure
 
 ```bash
