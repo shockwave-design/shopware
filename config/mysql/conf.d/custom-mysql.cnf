@@ -1,0 +1,3 @@
+[mysqld]
+max_allowed_packet = 32M
+#innodb_data_file_path=idbdata1:500M:autoextend

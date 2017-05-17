@@ -156,7 +156,8 @@ return array_replace_recursive([
         'cookie_httponly' => 1,
         'gc_probability' => 1,
         'gc_divisor' => 200,
-        'save_handler' => 'db',
+        'save_handler' => 'redis',
+        'save_path' => "tcp://rediscache:6379",
         'use_trans_sid' => 0,
         'locking' => true,
     ],
@@ -172,13 +173,16 @@ return array_replace_recursive([
             'lifetime' => 3600,
             'cache_id_prefix' => md5($this->getCacheDir()),
         ],
-        'backend' => 'auto', // e.G auto, apcu, xcache, redis
+        'backend' => 'redis', // e.G auto, apcu, xcache, redis
         'backendOptions' => [
             'hashed_directory_perm' => 0777 & ~umask(),
             'cache_file_perm' => 0666 & ~umask(),
             'hashed_directory_level' => 3,
             'cache_dir' => $this->getCacheDir() . '/general',
             'file_name_prefix' => 'shopware',
+            'servers' => [
+	            0 => ['host' => 'rediscache']
+            ]
         ],
     ],
     'hook' => [
@@ -199,5 +203,7 @@ return array_replace_recursive([
         'cookie_httponly' => 1,
         'use_trans_sid' => 0,
         'locking' => false,
+        'save_handler' => 'redis',
+        'save_path' => "tcp://rediscache:6379",
     ],
 ], $customConfig);

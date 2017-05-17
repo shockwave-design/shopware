@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+chmod 755 config.php
+chmod -R 755 var
+chmod -R 755 web
+chmod -R 755 files
+chmod -R 755 media
+chmod -R 755 engine/Shopware/Plugins/Community
+
+cd build/
+ant configure
+ant build-unit
+
+cd ..
+php -c /usr/local/etc/php/php-console.ini ./bin/console sw:store:download SwagDemoDataDE
+php -c /usr/local/etc/php/php-console.ini ./bin/console sw:plugin:uninstall SwagDemoDataDE
+php -c /usr/local/etc/php/php-console.ini ./bin/console sw:plugin:install SwagDemoDataDE

@@ -1,4 +1,140 @@
-# Shopware 5
+# Shopware 5 demo shop with docker
+
+## Docker setup
+
+This repository is based on the official shopware 5 repository and enhances its sources to be started in less than 
+10 minutes with a full installed 
+
+- nginx
+- php7.0    
+- redis (for session management) 
+- mysql 5.7
+
+and ready to develop
+
+- xdebug
+- ant
+- blackfire
+- new relic
+- logging to docker logging driver
+
+
+![](./docker/demo_shop.png)
+
+
+### Install docker
+
+![](./docker/horizontal_small.png)
+
+https://www.docker.com/
+
+e.g. for ubuntu: https://www.docker.com/docker-ubuntu
+
+
+```bash
+
+sudo apt-get -y install \
+  apt-transport-https \
+  ca-certificates \
+  curl
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+sudo add-apt-repository \
+       "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+       $(lsb_release -cs) \
+       stable"
+
+sudo apt-get update
+
+sudo apt-get -y install docker-ce
+
+```
+
+### Install docker-compose
+
+e.g. for ubuntu: https://github.com/docker/compose/releases
+
+```bash
+
+curl -L https://github.com/docker/compose/releases/download/1.13.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+
+```
+
+### Configure blackfire and papertrail
+
+Configure your blackfire server token and your papertrail port.
+
+```yaml
+blackfire:
+    image: blackfire/blackfire
+    environment:
+      BLACKFIRE_SERVER_ID: your-server-id
+      BLACKFIRE_SERVER_TOKEN: your-server-token
+    networks:
+        - front
+        - back
+
+  logspout:
+      image: gliderlabs/logspout
+      volumes:
+        - /var/run/docker.sock:/tmp/docker.sock
+      command: syslog+tls://logs5.papertrailapp.com:your-papertrail-port
+```
+
+### Startup shop infrastructure
+
+```bash
+
+cd /your-shop-root-folder/
+
+docker-compose up -d
+
+```
+
+### Install the shop (with demo data)
+
+```bash
+
+chmod +x bin/*
+bin/docker-install
+
+
+```
+
+### Hostfile entries
+
+If you want to develop on your own VM add host file entries
+
+**Linux**
+
+```sh
+echo "127.0.0.1    dev.shopware.io www.shopware.io" >> /etc/hosts
+```
+
+**OS X** (Docker Toolbox)
+
+```sh
+echo "192.168.99.100    dev.shopware.io www.shopware.io" >> /etc/hosts
+```
+
+**OS X** (Docker for Mac)
+
+```sh
+echo "127.0.0.1    dev.shopware.io www.shopware.io" >> /etc/hosts
+```
+
+### Open your shop in your browser
+
+Open http://dev.shopware.io/
+
+in your browser.
+
+That's it.
+
+## Shopware project
+
 
 [![Build Status](https://travis-ci.org/shopware/shopware.svg?branch=5.2)](https://travis-ci.org/shopware/shopware)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/shopware/localized.svg)](https://crowdin.com/project/shopware)
