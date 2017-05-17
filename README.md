@@ -64,7 +64,9 @@ chmod +x /usr/local/bin/docker-compose
 
 ### Configure blackfire and papertrail
 
-Configure your blackfire server token and your papertrail port.
+Configure your blackfire server token in docker-compose.yml:
+
+![](./docker/blackfire.png)
 
 ```yaml
 blackfire:
@@ -75,7 +77,13 @@ blackfire:
     networks:
         - front
         - back
+```
 
+and your papertrail port in docker-compose.yml:
+
+![](./docker/papertrail.png)
+        
+```yaml
   logspout:
       image: gliderlabs/logspout
       volumes:
