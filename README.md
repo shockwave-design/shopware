@@ -1,24 +1,30 @@
-# Shopware 5
+# Shopware 5 demo shop with docker
 
-[![Build Status](https://travis-ci.org/shopware/shopware.svg?branch=5.2)](https://travis-ci.org/shopware/shopware)
-[![Crowdin](https://d322cqt584bo4o.cloudfront.net/shopware/localized.svg)](https://crowdin.com/project/shopware)
+## Docker setup
 
-- **License**: Dual license AGPL v3 / Proprietary
-- **Github Repository**: <https://github.com/shopware/shopware>
-- **Issue Tracker**: <https://issues.shopware.com>
+This repository is based on the official shopware 5 repository and enhances its sources to be started in less than 
+10 minutes with a full installed 
 
-## Overview
+- nginx
+- php7.0    
+- redis (for session management) 
+- mysql 5.7
 
-![Shopware 5 collage](http://cdn.shopware.de/github/readme_screenshot.png)
+and ready to develop
 
-Shopware 5 is the next generation of open source e-commerce software made in Germany. Based on bleeding edge technologies like `Symfony 2`, `Doctrine 2` & `Zend Framework` Shopware comes as the perfect platform for your next e-commerce project.
-Furthermore Shopware 5 provides an event-driven plugin system and an advanced hook system, giving you the ability to customize every part of the platform.
+- xdebug
+- ant
+- blackfire
+- new relic
+- logging to docker logging driver
 
-Visit the forum at <http://forum.shopware.com/>
 
-# Docker setup
+![](./docker/demo_shop.png)
 
-Install docker
+
+### Install docker
+
+![](./docker/horizontal_small.png)
 
 https://www.docker.com/
 
@@ -45,7 +51,7 @@ sudo apt-get -y install docker-ce
 
 ```
 
-Install docker-compose
+### Install docker-compose
 
 e.g. for ubuntu: https://github.com/docker/compose/releases
 
@@ -56,7 +62,7 @@ chmod +x /usr/local/bin/docker-compose
 
 ```
 
-Startup shop infrastructure
+### Startup shop infrastructure
 
 ```bash
 
@@ -66,7 +72,7 @@ docker-compose up -d
 
 ```
 
-Install the shop
+### Install the shop (with demo data)
 
 ```bash
 
@@ -76,14 +82,29 @@ bin/docker-install
 
 ```
 
-Edit your hostfile on your computer
+### Hostfile entries
 
-e.g. ubuntu
+If you want to develop on your own VM add host file entries
 
+**Linux**
+
+```sh
+echo "127.0.0.1    dev.shopware.io www.shopware.io" >> /etc/hosts
 ```
-TODO
 
+**OS X** (Docker Toolbox)
+
+```sh
+echo "192.168.99.100    dev.shopware.io www.shopware.io" >> /etc/hosts
 ```
+
+**OS X** (Docker for Mac)
+
+```sh
+echo "127.0.0.1    dev.shopware.io www.shopware.io" >> /etc/hosts
+```
+
+### Open your shop in your browser
 
 Open http://dev.shopware.io/
 
@@ -91,7 +112,24 @@ in your browser.
 
 That's it.
 
+## Shopware project
 
+
+[![Build Status](https://travis-ci.org/shopware/shopware.svg?branch=5.2)](https://travis-ci.org/shopware/shopware)
+[![Crowdin](https://d322cqt584bo4o.cloudfront.net/shopware/localized.svg)](https://crowdin.com/project/shopware)
+
+- **License**: Dual license AGPL v3 / Proprietary
+- **Github Repository**: <https://github.com/shopware/shopware>
+- **Issue Tracker**: <https://issues.shopware.com>
+
+## Overview
+
+![Shopware 5 collage](http://cdn.shopware.de/github/readme_screenshot.png)
+
+Shopware 5 is the next generation of open source e-commerce software made in Germany. Based on bleeding edge technologies like `Symfony 2`, `Doctrine 2` & `Zend Framework` Shopware comes as the perfect platform for your next e-commerce project.
+Furthermore Shopware 5 provides an event-driven plugin system and an advanced hook system, giving you the ability to customize every part of the platform.
+
+Visit the forum at <http://forum.shopware.com/>
 
 ### Shopware Server Requirements
 

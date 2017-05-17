@@ -180,6 +180,9 @@ return array_replace_recursive([
             'hashed_directory_level' => 3,
             'cache_dir' => $this->getCacheDir() . '/general',
             'file_name_prefix' => 'shopware',
+            'servers' => [
+	            0 => ['host' => 'rediscache']
+            ]
         ],
     ],
     'hook' => [
